@@ -20,7 +20,10 @@ You will need the following env variables set for it to work:
 Your bot needs to have admin permissions as well as intent privileges.
 
 An example on how to run this (replacing each XYZ with actual values) would be this command:
-`docker run --env API_TOKEN=XYZ --env WORLD_NAME=XYZ --env BOT_SECRET=XYZ --env CATEGORY_ID=XYZ --env PLAYERS_CHANNEL=XYZ --env QUEUE_CHANNEL=XYZ --env WAIT_CHANNEL=XYZ --env LOG_CHANNEL=XYZ christian-riesen/new-world-server-status-discord-bot`
+`docker run --env API_TOKEN=XYZ --env WORLD_NAME=XYZ --env BOT_SECRET=XYZ --env CATEGORY_ID=XYZ --env PLAYERS_CHANNEL=XYZ --env QUEUE_CHANNEL=XYZ --env WAIT_CHANNEL=XYZ --env LOG_CHANNEL=XYZ christianriesen/new-world-server-status-discord-bot`
+
+To make it slightly easier, you can copy the `env_file.dist` to `env_file` and edit the file to add the values there. Then you can launch it with just this:
+`docker run --env-file env_file christianriesen/new-world-server-status-discord-bot`
 
 If you made sure that all works well, you can add `-d` to run it in the background.
 

@@ -1,0 +1,14 @@
+# Token from unoffical API, usually starts with FIRSTLIGHT
+API_TOKEN=
+# Lowercase servername from the api endpoint of worlds list
+WORLD_NAME=
+# Discord bot secret
+BOT_SECRET=
+# Id of category in which the voice channels are
+CATEGORY_ID=
+# Voice channel ids to update for status data
+PLAYERS_CHANNEL=
+QUEUE_CHANNEL=
+WAIT_CHANNEL=
+# Text channel for logging
+LOG_CHANNEL=

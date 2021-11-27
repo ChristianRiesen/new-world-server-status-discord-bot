@@ -28,13 +28,11 @@ prefix = f"@New World Bot :" #Change this if you want, its just what displays in
 BearerTokenAPI = os.environ['API_TOKEN'] #Grab your Bearer Token from https://newworldstatus.com/unofficial-status-api
 
 # Create three channels and grab the ID's for these variables.
-CategoryName = os.environ['CATEGORY_ID'] #Put channel ID You want here.
-Playerschannel = os.environ['PLAYERS_CHANNEL'] #Put channel ID You want here.
-QueueChannel = os.environ['QUEUE_CHANNEL'] #Put channel ID 2 You want here.
-MinutesToWaitChannel = os.environ['WAIT_CHANNEL'] #Put channel ID 3 You want here.
-Log_Channel = os.environ['LOG_CHANNEL']
+CategoryName = int(os.environ['CATEGORY_ID']) #Put channel ID You want here.
+Playerschannel = int(os.environ['PLAYERS_CHANNEL']) #Put channel ID You want here.
+QueueChannel = int(os.environ['QUEUE_CHANNEL']) #Put channel ID 2 You want here.
+MinutesToWaitChannel = int(os.environ['WAIT_CHANNEL']) #Put channel ID 3 You want here.
+LogChannel = int(os.environ['LOG_CHANNEL'])
 
 client = discord.Client(intents=discord.Intents.all())
-slash = SlashCommand(client, sync_commands=True)
 bot = discord.Client()
-guilds = len(list(bot.guilds))

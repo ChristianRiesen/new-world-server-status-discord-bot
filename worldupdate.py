@@ -1,9 +1,5 @@
 from config import *
 
-lastchecked = ""
-Queuesend = False
-queuechecked = ""
-
 @tasks.loop(seconds=300)
 async def ServerStats():
     url = "http://firstlight.newworldstatus.com/ext/v1/worlds/" + worldname
@@ -18,10 +14,10 @@ async def ServerStats():
     Playerschannel_Var = client.get_channel(Playerschannel) #Put channel ID You want here.
     QueueChannel_Var = client.get_channel(QueueChannel)#Put channel ID 2 You want here.
     MinutesToWaitChannel_Var = client.get_channel(MinutesToWaitChannel)#Put channel ID 3 You want here.
-
+    LogChannel_Var = client.get_channel(LogChannel) # Logs go here
     await discord.CategoryChannel.edit(CategoryName_Var, name = f"📊 {worldname} Server Stats 📊")
 
-    print(colored (f"{prefix} Server responded with Status: {resp.status_code}", 'white','on_green'))
+    print(f"Server responded with Status: {resp.status_code}")
 
     if resp.status_code == 200:
         print(f"{prefix} Status is 200, Updating Stats...")
@@ -74,13 +70,11 @@ async def ServerStats():
             hour = 60*60
             amountofhours = 3
             minstowait = hour * amountofhours
-            channel = client.get_channel(Log_Channel)
-            await channel.send(f"I have sent too many requests to the API, I will try again in {amountofhours} hour(s). ")
+            await LogChannel_Var.send(f"I have sent too many requests to the API, I will try again in {amountofhours} hour(s). ")
             await asyncio.sleep(minstowait)
             amountofhours += 0.5
 
         else:
            # print("Status code is " + str(statuscode.status_code) + " - Retrying in 120 seconds."
            print(colored (f"{prefix} Error!! Status code: {resp.status_code}", 'white','on_red'))
-           channel = client.get_channel(Log_Channel)
-        await channel.send(f"I have encountered an error with updating the server values. Please check the console. ")
+        await LogChannel_Var.send(f"I have encountered an error with updating the server values. Please check the console. ")
