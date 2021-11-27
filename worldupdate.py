@@ -4,12 +4,8 @@ lastchecked = ""
 Queuesend = False
 queuechecked = ""
 
-
-
-@tasks.loop(seconds=180)
+@tasks.loop(seconds=300)
 async def ServerStats():
-
-    
     url = "http://firstlight.newworldstatus.com/ext/v1/worlds/" + worldname
     headers = CaseInsensitiveDict()
     headers["Accept"] = "application/json"
@@ -17,35 +13,28 @@ async def ServerStats():
     #Bearer Token Removed to public.
     headers["Authorization"] = "Bearer " + BearerTokenAPI
     resp = requests.get(url, headers=headers)
-    
-    
+
     CategoryName_Var = client.get_channel(CategoryName)
     Playerschannel_Var = client.get_channel(Playerschannel) #Put channel ID You want here.
     QueueChannel_Var = client.get_channel(QueueChannel)#Put channel ID 2 You want here.
     MinutesToWaitChannel_Var = client.get_channel(MinutesToWaitChannel)#Put channel ID 3 You want here.
 
-
     await discord.CategoryChannel.edit(CategoryName_Var, name = f"📊 {worldname} Server Stats 📊")
- 
+
     print(colored (f"{prefix} Server responded with Status: {resp.status_code}", 'white','on_green'))
-    
+
     if resp.status_code == 200:
         print(f"{prefix} Status is 200, Updating Stats...")
 
-        
         players = str(resp.json()['message']['players_current'])
         player_cap = str(resp.json()['message']['players_maximum']) # This is added because some worlds have a higher cap than others.
         queue = str(resp.json()['message']['queue_current'])
         wait = str(resp.json()['message']['queue_wait_time_minutes'])
 
-        
-
-
         print(colored (f"{prefix} Sucess!!", 'white','on_green'))
         print(f"{prefix} Player Count is {players} / {player_cap}")
         print(f"{prefix} Queue Count is {queue}")
         print(f"{prefix} Waiting Time  is  {wait}")
-
 
         #Update current player count#
         try:
@@ -59,7 +48,6 @@ async def ServerStats():
                 await discord.VoiceChannel.edit(Playerschannel_Var, name = f"🔴 Players: {players} / {player_cap}")
             else:
                 await discord.VoiceChannel.edit(Playerschannel_Var, name = f"❓ Players: {players} / {player_cap}")
-        
 
         #Update Queue Size
             if(int(queue) >= 0 and int(queue) <= 34):
@@ -90,7 +78,7 @@ async def ServerStats():
             await channel.send(f"I have sent too many requests to the API, I will try again in {amountofhours} hour(s). ")
             await asyncio.sleep(minstowait)
             amountofhours += 0.5
-            
+
         else:
            # print("Status code is " + str(statuscode.status_code) + " - Retrying in 120 seconds."
            print(colored (f"{prefix} Error!! Status code: {resp.status_code}", 'white','on_red'))

@@ -17,29 +17,22 @@ import asyncio
 from termcolor import colored
 from datetime import datetime
 
-
-
 intents = discord.Intents.default()
 discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 
-
-worldname = "bifrost" # Change this to the world you want to track.
+worldname = os.environ['WORLD_NAME'] # Change this to the world you want to track.
 guild_ids = [] # Put your server ID in this array.
-my_secret = "" # Add your Bot secret here.
+my_secret = os.environ['BOT_SECRET'] # Add your Bot secret here.
 prefix = f"@New World Bot :" #Change this if you want, its just what displays in the console.
 
-
-BearerTokenAPI = "" #Grab your Bearer Token from https://newworldstatus.com/unofficial-status-api
+BearerTokenAPI = os.environ['API_TOKEN'] #Grab your Bearer Token from https://newworldstatus.com/unofficial-status-api
 
 # Create three channels and grab the ID's for these variables.
-CategoryName = 905480752056107078 #Put channel ID You want here.
-Playerschannel = 905480752727216128 #Put channel ID You want here.
-QueueChannel = 905480753335386202 #Put channel ID 2 You want here.
-MinutesToWaitChannel = 905480753960353812 #Put channel ID 3 You want here.
-Log_Channel = 534534543543534534
-
-
-
+CategoryName = os.environ['CATEGORY_ID'] #Put channel ID You want here.
+Playerschannel = os.environ['PLAYERS_CHANNEL'] #Put channel ID You want here.
+QueueChannel = os.environ['QUEUE_CHANNEL'] #Put channel ID 2 You want here.
+MinutesToWaitChannel = os.environ['WAIT_CHANNEL'] #Put channel ID 3 You want here.
+Log_Channel = os.environ['LOG_CHANNEL']
 
 client = discord.Client(intents=discord.Intents.all())
 slash = SlashCommand(client, sync_commands=True)
