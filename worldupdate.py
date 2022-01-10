@@ -2,13 +2,16 @@ from config import *
 
 @tasks.loop(seconds=300)
 async def ServerStats():
-    url = "http://firstlight.newworldstatus.com/ext/v1/worlds/" + worldname
+    #url = "http://firstlight.newworldstatus.com/ext/v1/worlds/" + worldname
+    # Hardcoded for Bifrost
+    url = "https://nwdb.info/server-status/servers.json?worldId=da497b523fed"
     headers = CaseInsensitiveDict()
-    headers["Accept"] = "application/json"
+    #headers["Accept"] = "application/json"
     headers = {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
-    #Bearer Token Removed to public.
-    headers["Authorization"] = "Bearer " + BearerTokenAPI
+    #Bearer Token from old API, hopefully there is a new one coming.
+    #headers["Authorization"] = "Bearer " + BearerTokenAPI
     resp = requests.get(url, headers=headers)
+    data = resp.text
 
     CategoryName_Var = client.get_channel(CategoryName)
     Playerschannel_Var = client.get_channel(Playerschannel) #Put channel ID You want here.
@@ -22,15 +25,21 @@ async def ServerStats():
     if resp.status_code == 200:
         print(f"{prefix} Status is 200, Updating Stats...")
 
-        players = str(resp.json()['message']['players_current'])
-        player_cap = str(resp.json()['message']['players_maximum']) # This is added because some worlds have a higher cap than others.
-        queue = str(resp.json()['message']['queue_current'])
-        wait = str(resp.json()['message']['queue_wait_time_minutes'])
+        players = str(data.split(",")[17])
+        queue = str(data.split(",")[18])
+
+        #players = str(resp.json()['message']['players_current'])
+        #player_cap = str(resp.json()['message']['players_maximum']) # This is added because some worlds have a higher cap than others.
+        #queue = str(resp.json()['message']['queue_current'])
+        #wait = str(resp.json()['message']['queue_wait_time_minutes'])
+
+        # Bifrost value only
+        player_cap = 2000
 
         print(colored (f"{prefix} Sucess!!", 'white','on_green'))
         print(f"{prefix} Player Count is {players} / {player_cap}")
         print(f"{prefix} Queue Count is {queue}")
-        print(f"{prefix} Waiting Time  is  {wait}")
+        #print(f"{prefix} Waiting Time  is  {wait}")
 
         #Update current player count#
         try:
@@ -58,7 +67,7 @@ async def ServerStats():
                 await discord.VoiceChannel.edit(QueueChannel_Var, name = f"❓ Queue: {queue}")
 
             #Update Queue Wait Times
-            await discord.VoiceChannel.edit(MinutesToWaitChannel_Var, name = f"⏲️ Wait Time: {wait} Mins.")
+            #await discord.VoiceChannel.edit(MinutesToWaitChannel_Var, name = f"⏲️ Wait Time: {wait} Mins.")
         except:
             print("Can not update server stats. Please use /help for configuration options.")
 
