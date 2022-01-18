@@ -8,8 +8,8 @@ You can run it locally or as this version is meant to, as a docker container.
 
 You will need the following env variables set for it to work:
 
-`API_TOKEN` is the Bearer token you get from the API. You can [request one here](https://newworldstatus.com/__automata/gtm/request.aspx).
-`WORLD_NAME` needs to be one of the names returned from the API call to `/worlds`. It's usually all lower case, so make sure you copy this exactly. Make the first call with some client to ensure you got that right.
+`AGENT` is the Bearer token you get from the API. You can [request one here](https://newworldstatus.com/__automata/gtm/request.aspx).
+`WORLD_ID` needs to be one returned in this data: https://nwdb.info/server-status/servers.json
 `BOT_SECRET` is the secret your bot has on Discord. When you register an app, you get this from Discord.
 `CATEGORY_ID` is the id of the category you put the voice channels into. It maybe be a bit tricky to find it, but you can inspect the code if you load Discord in browser and copy the number out there.
 `PLAYERS_CHANNEL` is the voice channel that should display the numbers of players (1234 / 2000 for example).

@@ -20,18 +20,17 @@ from datetime import datetime
 intents = discord.Intents.default()
 discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 
-worldname = os.environ['WORLD_NAME'] # Change this to the world you want to track.
+worldid = os.environ['WORLD_ID'] # Change this to the world you want to track.
 guild_ids = [] # Put your server ID in this array.
 my_secret = os.environ['BOT_SECRET'] # Add your Bot secret here.
 prefix = f"@New World Bot :" #Change this if you want, its just what displays in the console.
-
-BearerTokenAPI = os.environ['API_TOKEN'] #Grab your Bearer Token from https://newworldstatus.com/unofficial-status-api
+user_agent = os.environ['AGENT'] # Talk to NWDB devs on discord to get a unique one
 
 # Create three channels and grab the ID's for these variables.
 CategoryName = int(os.environ['CATEGORY_ID']) #Put channel ID You want here.
 Playerschannel = int(os.environ['PLAYERS_CHANNEL']) #Put channel ID You want here.
 QueueChannel = int(os.environ['QUEUE_CHANNEL']) #Put channel ID 2 You want here.
-MinutesToWaitChannel = int(os.environ['WAIT_CHANNEL']) #Put channel ID 3 You want here.
+#MinutesToWaitChannel = int(os.environ['WAIT_CHANNEL']) #Put channel ID 3 You want here.
 LogChannel = int(os.environ['LOG_CHANNEL'])
 
 client = discord.Client(intents=discord.Intents.all())

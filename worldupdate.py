@@ -2,16 +2,12 @@ from config import *
 
 @tasks.loop(seconds=300)
 async def ServerStats():
-    #url = "http://firstlight.newworldstatus.com/ext/v1/worlds/" + worldname
-    # Hardcoded for Bifrost
-    url = "https://nwdb.info/server-status/servers.json?worldId=da497b523fed"
+    url = "https://nwdb.info/server-status/servers.json?worldId=" + worldid
     headers = CaseInsensitiveDict()
-    #headers["Accept"] = "application/json"
-    headers = {'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
-    #Bearer Token from old API, hopefully there is a new one coming.
-    #headers["Authorization"] = "Bearer " + BearerTokenAPI
+    headers = {'User-agent': user_agent}
     resp = requests.get(url, headers=headers)
-    data = resp.text
+    response = resp.text
+    output = json.loads(response)
 
     CategoryName_Var = client.get_channel(CategoryName)
     Playerschannel_Var = client.get_channel(Playerschannel) #Put channel ID You want here.
@@ -25,25 +21,17 @@ async def ServerStats():
     if resp.status_code == 200:
         print(f"{prefix} Status is 200, Updating Stats...")
 
-        players = str(data.split(",")[17])
-        queue = str(data.split(",")[18])
-
-        #players = str(resp.json()['message']['players_current'])
-        #player_cap = str(resp.json()['message']['players_maximum']) # This is added because some worlds have a higher cap than others.
-        #queue = str(resp.json()['message']['queue_current'])
-        #wait = str(resp.json()['message']['queue_wait_time_minutes'])
-
-        # Bifrost value only
-        player_cap = 2000
+        players = output['data']['servers'][0][1]
+        player_cap = output['data']['servers'][0][0]
+        queue = output['data']['servers'][0][2]
 
         print(colored (f"{prefix} Sucess!!", 'white','on_green'))
         print(f"{prefix} Player Count is {players} / {player_cap}")
         print(f"{prefix} Queue Count is {queue}")
-        #print(f"{prefix} Waiting Time  is  {wait}")
 
         #Update current player count#
         try:
-            if(int(players) >= 500 and int(players) <= 999 ):
+            if(int(players) >= 1 and int(players) <= 999 ):
                 await discord.VoiceChannel.edit(Playerschannel_Var, name = f"🟢 Players: {players} / {player_cap}")
             elif(int(players) >= 1000 and int(players) <= 1499):
                 await discord.VoiceChannel.edit(Playerschannel_Var, name = f"🟡 Players: {players} / {player_cap}")
@@ -52,7 +40,7 @@ async def ServerStats():
             elif(int(players) >= 1900):
                 await discord.VoiceChannel.edit(Playerschannel_Var, name = f"🔴 Players: {players} / {player_cap}")
             else:
-                await discord.VoiceChannel.edit(Playerschannel_Var, name = f"❓ Players: {players} / {player_cap}")
+                await discord.VoiceChannel.edit(Playerschannel_Var, name = f"⚙️ Down For Maintenance")
 
         #Update Queue Size
             if(int(queue) >= 0 and int(queue) <= 34):
